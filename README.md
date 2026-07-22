@@ -1,2 +1,3 @@
 # extreme_rainfall
 Extreme Rainfall in Ōtautahi Christchurch: Spatial Patterns and Self Organizing Maps for weather forecasting File
+This project aims to build a data-driven characterisation of extreme rainfall in Christchurch and the surrounding area, including Banks Peninsula and Whakaraupō | Lyttelton Harbour. Students will leverage publicly available rainfall observations and daily weather pattern data to quantify how extreme rainfall varies in space and time across the city, identify the weather patterns using unsupervised machine learning and quantify probability of occurrence of the most extreme events. This work will support evidence-based flood and landslide risk planning.
