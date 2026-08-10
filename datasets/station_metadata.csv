@@ -1,0 +1,13 @@
+station_name,provider,station_id,lat,lon,elevation_m,zone,resolution,record_start,record_end,n_records,source_file,notes
+Bottle Lake Forest,FENZ,bottle_lake_forest_hv,-43.47028,172.68222,5,Plains,unknown,,,216211,FENZ_Bottle_Lake_Forest.csv,no timestamp column - needs re-export
+Christchurch Aws,FENZ,christchurch_aws_ms,-43.493,172.537,30,Plains,unknown,,,20611,FENZ_Christchurch_Aws.csv,no timestamp column - needs re-export
+Diamond Harbour,FENZ,diamond_harbour,-43.64197,172.72115,235,Banks Peninsula,unknown,,,41936,FENZ_Diamond_Harbour.csv,no timestamp column - needs re-export
+Diamond Harbour Ews,FENZ,diamond_harbour_ews_nw,-43.63324,172.72808,124,Banks Peninsula,unknown,,,25074,FENZ_Diamond_Harbour_Ews.csv,no timestamp column - needs re-export
+Early Valley,FENZ,early_valley_hv,-43.61709,172.60899999999998,306,Port Hills,unknown,,,46237,FENZ_Early_Valley.csv,no timestamp column - needs re-export
+Godley Head,FENZ,godley_head_hv,-43.58801,172.79999999999998,141,Banks Peninsula,unknown,,,77968,FENZ_Godley_Head.csv,no timestamp column - needs re-export
+Lincoln,FENZ,lincoln_nw,-43.62622,172.47039999999998,16,Plains,unknown,,,24953,FENZ_Lincoln.csv,no timestamp column - needs re-export
+McLeans,FENZ,mcleans,-43.47984,172.53212,33,Plains,unknown,,,41735,FENZ_McLeans.csv,no timestamp column - needs re-export
+Motukarara,FENZ,motukarara,-43.72111,172.59,20,Plains,unknown,,,225031,FENZ_Motukarara.csv,no timestamp column - needs re-export
+Rangiora,FENZ,rangiora_nw,-43.32858,172.61114,12,Plains,unknown,,,24857,FENZ_Rangiora.csv,no timestamp column - needs re-export
+Christchurch Aero,NIWA,4843,-43.4894,172.5325,31,Plains,daily,1943-09-01,2026-07-04,30080,chch_aero_rain_daily.csv,daily total is the 24 h to 09:00 NZST
+Christchurch Gardens,NIWA,4858,-43.531,172.62,12,Plains,daily,1873-01-01,2026-05-31,50545,chch_gardens_rain_daily.csv,daily total is the 24 h to 09:00 NZST
