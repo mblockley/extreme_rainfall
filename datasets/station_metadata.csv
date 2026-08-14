@@ -1,13 +1,27 @@
 station_name,provider,station_id,lat,lon,elevation_m,zone,resolution,record_start,record_end,n_records,source_file,notes
-Bottle Lake Forest,FENZ,bottle_lake_forest_hv,-43.470279999999995,172.68222,5,Plains,unknown,,,216211,FENZ_Bottle_Lake_Forest.csv,no timestamp column - needs re-export
-Christchurch Aws,FENZ,christchurch_aws_ms,-43.492999999999995,172.537,30,Plains,unknown,,,20611,FENZ_Christchurch_Aws.csv,no timestamp column - needs re-export
-Diamond Harbour,FENZ,diamond_harbour,-43.64197,172.72115,235,Banks Peninsula,unknown,,,41936,FENZ_Diamond_Harbour.csv,no timestamp column - needs re-export
-Diamond Harbour Ews,FENZ,diamond_harbour_ews_nw,-43.63324,172.72808,124,Banks Peninsula,unknown,,,25074,FENZ_Diamond_Harbour_Ews.csv,no timestamp column - needs re-export
-Early Valley,FENZ,early_valley_hv,-43.61709,172.60899999999998,306,Port Hills,unknown,,,46237,FENZ_Early_Valley.csv,no timestamp column - needs re-export
-Godley Head,FENZ,godley_head_hv,-43.58801,172.79999999999998,141,Banks Peninsula,unknown,,,77968,FENZ_Godley_Head.csv,no timestamp column - needs re-export
-Lincoln,FENZ,lincoln_nw,-43.62622,172.47039999999998,16,Plains,unknown,,,24953,FENZ_Lincoln.csv,no timestamp column - needs re-export
-McLeans,FENZ,mcleans,-43.47984,172.53212,33,Plains,unknown,,,41735,FENZ_McLeans.csv,no timestamp column - needs re-export
-Motukarara,FENZ,motukarara,-43.72111,172.59,20,Plains,unknown,,,225031,FENZ_Motukarara.csv,no timestamp column - needs re-export
-Rangiora,FENZ,rangiora_nw,-43.328579999999995,172.61114,12,Plains,unknown,,,24857,FENZ_Rangiora.csv,no timestamp column - needs re-export
-Christchurch Aero,NIWA,?????,-43.4894,172.5325,31,Plains,daily,,,30080,chch_aero_rain_daily.csv,
-Christchurch Gardens,NIWA,????,-43.531,172.62,12,Plains,daily,,,50545,chch_gardens_rain_daily.csv,
+Bottle Lake Forest,FENZ,bottle_lake_forest_hv,-43.470279999999995,172.68222,5.0,Plains,unknown,,,216211,FENZ_Bottle_Lake_Forest.csv,no timestamp column - needs re-export
+Christchurch Aws,FENZ,christchurch_aws_ms,-43.492999999999995,172.537,30.0,Plains,unknown,,,20611,FENZ_Christchurch_Aws.csv,no timestamp column - needs re-export
+Diamond Harbour,FENZ,diamond_harbour,-43.64197,172.72115,235.0,Banks Peninsula,unknown,,,41936,FENZ_Diamond_Harbour.csv,no timestamp column - needs re-export
+Diamond Harbour Ews,FENZ,diamond_harbour_ews_nw,-43.63324,172.72808,124.0,Banks Peninsula,unknown,,,25074,FENZ_Diamond_Harbour_Ews.csv,no timestamp column - needs re-export
+Early Valley,FENZ,early_valley_hv,-43.61709,172.60899999999998,306.0,Port Hills,unknown,,,46237,FENZ_Early_Valley.csv,no timestamp column - needs re-export
+Godley Head,FENZ,godley_head_hv,-43.58801,172.79999999999998,141.0,Banks Peninsula,unknown,,,77968,FENZ_Godley_Head.csv,no timestamp column - needs re-export
+Lincoln,FENZ,lincoln_nw,-43.62622,172.47039999999998,16.0,Plains,unknown,,,24953,FENZ_Lincoln.csv,no timestamp column - needs re-export
+McLeans,FENZ,mcleans,-43.47984,172.53212,33.0,Plains,unknown,,,41735,FENZ_McLeans.csv,no timestamp column - needs re-export
+Motukarara,FENZ,motukarara,-43.72111,172.59,20.0,Plains,unknown,,,225031,FENZ_Motukarara.csv,no timestamp column - needs re-export
+Rangiora,FENZ,rangiora_nw,-43.328579999999995,172.61114,12.0,Plains,unknown,,,24857,FENZ_Rangiora.csv,no timestamp column - needs re-export
+Banks Peninsula at Kaituna Valley,ECAN,327701,-43.71908,172.75042,277.843,Banks Peninsula,unknown,,,499656,ECAN_Banks_Peninsula_at_Kaituna_Valley.csv,no timestamp column - needs re-export
+Barrys Bay at Hilltop,ECAN,328914,-43.752579999999995,172.86822999999998,478.396,Banks Peninsula,unknown,,,88841,ECAN_Barrys_Bay_at_Hilltop.csv,no timestamp column - needs re-export
+Christchurch Aero,ECAN,324501,-43.48134,172.5331,32.22,Plains,unknown,,,225,ECAN_Christchurch_Aero.csv,no timestamp column - needs re-export
+"Christchurch, Kyle St EWS",ECAN,325615,-43.53074,172.60769,11.26,Plains,unknown,,,508,ECAN_Christchurch_Kyle_St_EWS.csv,no timestamp column - needs re-export
+Cust Main Drain at Threlkelds Road,ECAN,323610,-43.36243,172.61265,9.758,Plains,unknown,,,189435,ECAN_Cust_Main_Drain_at_Threlkelds_Road.csv,no timestamp column - needs re-export
+Halswell at Coopers Knob,ECAN,326611,-43.65213,172.62054,385.778,Port Hills,unknown,,,261338,ECAN_Halswell_at_Coopers_Knob.csv,no timestamp column - needs re-export
+Halswell at Ryans Bge,ECAN,326512,-43.66198,172.54193999999998,7.499,Plains,unknown,,,215443,ECAN_Halswell_at_Ryans_Bge.csv,no timestamp column - needs re-export
+Halswell at Tai Tapu,ECAN,326510,-43.65465,172.52930999999998,6.7090000000000005,Plains,unknown,,,271680,ECAN_Halswell_at_Tai_Tapu.csv,no timestamp column - needs re-export
+Heathcote at Hoon Hay,ECAN,326610,-43.60349,172.6097,38.805,Port Hills,unknown,,,213960,ECAN_Heathcote_at_Hoon_Hay.csv,no timestamp column - needs re-export
+Hukahuka at Summit,ECAN,327811,-43.71735,172.78517,651.091,Port Hills,unknown,,,86605,ECAN_Hukahuka_at_Summit.csv,no timestamp column - needs re-export
+Kaituna Valley at Tophouse,ECAN,327702,-43.71535,172.75010999999998,377.332,Banks Peninsula,unknown,,,430080,ECAN_Kaituna_Valley_at_Tophouse.csv,no timestamp column - needs re-export
+Kaituna at Kaituna Valley Rd,ECAN,328711,-43.75672,172.68197999999998,8.27,Banks Peninsula,unknown,,,265501,ECAN_Kaituna_at_Kaituna_Valley_Rd.csv,no timestamp column - needs re-export
+"Lincoln, Broadfield Ews",ECAN,326405,-43.62535,172.47005,16.074,Plains,unknown,,,158284,ECAN_Lincoln_Broadfield_Ews.csv,no timestamp column - needs re-export
+Waimakariri at Kainga Yard,ECAN,324611,-43.41655,172.65402,7.882000000000001,Plains,unknown,,,612899,ECAN_Waimakariri_at_Kainga_Yard.csv,no timestamp column - needs re-export
+Christchurch Aero,NIWA,?????,-43.4894,172.5325,31.0,Plains,daily,1943-09-01,2026-07-04,30080,chch_aero_rain_daily.csv,daily total is the 24 h to 09:00 NZST
+Christchurch Gardens,NIWA,????,-43.531,172.62,12.0,Plains,daily,1873-01-01,2026-05-31,50545,chch_gardens_rain_daily.csv,daily total is the 24 h to 09:00 NZST
