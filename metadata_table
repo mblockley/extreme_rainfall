@@ -1,0 +1,87 @@
+"""
+METADATA TABLE
+"""
+
+import pandas as pd
+from pathlib import Path
+
+DATA = Path("datasets")
+
+
+EXTRA = {
+    "Bottle Lake Forest":   {"elevation_m": 5,   "zone": "Plains"},
+    "Christchurch Aws":     {"elevation_m": 30,  "zone": "Plains"},
+    "Diamond Harbour":      {"elevation_m": 235, "zone": "Banks Peninsula"},
+    "Diamond Harbour Ews":  {"elevation_m": 124, "zone": "Banks Peninsula"},
+    "Early Valley":         {"elevation_m": 306, "zone": "Port Hills"},
+    "Godley Head":          {"elevation_m": 141, "zone": "Banks Peninsula"},
+    "Lincoln":              {"elevation_m": 16,  "zone": "Plains"},
+    "McLeans":              {"elevation_m": 33,  "zone": "Plains"},
+    "Motukarara":           {"elevation_m": 20,  "zone": "Plains"},
+    "Rangiora":             {"elevation_m": 12,  "zone": "Plains"},
+    "Christchurch Aero":    {"elevation_m": 31,  "zone": "Plains"},
+    "Christchurch Gardens": {"elevation_m": 12,  "zone": "Plains"},
+}
+
+
+NIWA = {
+    "chch_aero_rain_daily.csv":    {"name": "Christchurch Aero",    "id": "4843",
+                                    "lat": -43.4894, "lon": 172.5325},
+    "chch_gardens_rain_daily.csv": {"name": "Christchurch Gardens", "id": "4858",
+                                    "lat": -43.5310, "lon": 172.6200},
+}
+
+rows = []
+
+#_________________FENZ files ___________________________
+for path in sorted(DATA.glob("FENZ_*.csv")):
+    df = pd.read_csv(path)
+    first = df.iloc[0]
+    has_time = any("time" in c.lower() or "date" in c.lower() for c in df.columns)
+    rows.append({
+        "station_name": first["name"],
+        "provider": "FENZ",
+        "station_id": first["ref"],
+        "lat": first["lat"],
+        "lon": first["lon"],
+        "resolution": "sub-daily" if has_time else "unknown",
+        "record_start": "",
+        "record_end": "",
+        "n_records": len(df),
+        "source_file": path.name,
+        "notes": "" if has_time else "no timestamp column - needs re-export",
+    })
+
+# ________________ NIWA files_____________________________
+for filename, info in NIWA.items():
+    path = DATA / filename
+    if not path.exists():
+        continue
+    df = pd.read_csv(path)
+    time = pd.to_datetime(df["Observation time UTC"], errors="coerce")
+    rows.append({
+        "station_name": info["name"],
+        "provider": "NIWA",
+        "station_id": info["id"],
+        "lat": info["lat"],
+        "lon": info["lon"],
+        "resolution": "daily",
+        "record_start": time.min().date(),
+        "record_end": time.max().date(),
+        "n_records": len(df),
+        "source_file": path.name,
+        "notes": "daily total is the 24 h to 09:00 NZST",
+    })
+
+# _______________add elevation / zone____________
+out = pd.DataFrame(rows)
+out["elevation_m"] = out["station_name"].map(lambda n: EXTRA.get(n, {}).get("elevation_m"))
+out["zone"] = out["station_name"].map(lambda n: EXTRA.get(n, {}).get("zone"))
+
+out = out[["station_name", "provider", "station_id", "lat", "lon", "elevation_m",
+           "zone", "resolution", "record_start", "record_end", "n_records",
+           "source_file", "notes"]]
+
+out.to_csv(DATA / "station_metadata.csv", index=False)
+print(out.to_string(index=False))
+print(f"\nSaved {len(out)} stations to {DATA / 'station_metadata.csv'}")
