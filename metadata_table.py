@@ -152,9 +152,4 @@ out["elevation_m"] = out.apply(
 )
 
 out = out[["station_name", "provider", "station_id", "lat", "lon", "elevation_m",
-           "zone", "resolution", "record_start", "record_end", "n_records",
-           "source_file", "notes"]]
-
-out.to_csv(DATA / "station_metadata.csv", index=False)
-print(out.to_string(index=False))
-print(f"\nSaved {len(out)} stations to {DATA / 'station_metadata.csv'}")
+           "zone"
