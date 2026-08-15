@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 venv/
+# Large rainfall datasets
+datasets/ECAN_Waimakariri_at_Kainga_Yard.csv
+datasets/ECAN_Christchurch_Gardens.csv
