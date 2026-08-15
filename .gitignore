@@ -3,5 +3,11 @@
 .RData
 .Ruserdata
 venv/
+<<<<<<< HEAD
 .Rproj.user
 .Rproj.user
+=======
+# Large rainfall datasets
+datasets/ECAN_Waimakariri_at_Kainga_Yard.csv
+datasets/ECAN_Christchurch_Gardens.csv
+>>>>>>> 34d02416f16b3cc888d9deb4e1dfb187a8c8a9b2
