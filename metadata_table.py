@@ -61,6 +61,20 @@ def has_real_timestamp(df):
     ]
     return len(candidates) > 0
 
+def time_span(df):
+    """returns first and last observation dates"""
+    candidates = [
+        c for c in df.columns
+        if ("time" in c.lower() or "date" in c.lower())
+        and c.lower() != "modified_date"
+    ]
+    if not candidates:
+        return "", ""
+    t = pd.to_datetime(df[candidates[0]], errors="coerce").dropna()
+    if t.empty:
+        return "", ""
+    return t.min().date(), t.max().date()
+
 
 rows = []
 
@@ -68,7 +82,8 @@ rows = []
 for path in sorted(DATA.glob("FENZ_*.csv")):
     df = pd.read_csv(path)
     first = df.iloc[0]
-    has_time = has_real_timestamp(df)    
+    has_time = has_real_timestamp(df)
+    start, end = time_span(df)    
     rows.append({
         "station_name": first["name"],
         "provider": "FENZ",
@@ -76,8 +91,8 @@ for path in sorted(DATA.glob("FENZ_*.csv")):
         "lat": first["lat"],
         "lon": first["lon"],
         "resolution": "sub-daily" if has_time else "unknown",
-        "record_start": "",
-        "record_end": "",
+        "record_start": start,
+        "record_end": end,
         "n_records": len(df),
         "source_file": path.name,
         "notes": "" if has_time else "no timestamp column - needs re-export",
@@ -89,6 +104,7 @@ for path in sorted(DATA.glob("ECAN_*.csv")):
     df = pd.read_csv(path)
     first = df.iloc[0]
     has_time = has_real_timestamp(df)
+    start, end = time_span(df)
     rows.append({
         "station_name": first["name"],
         "provider": "ECAN",
@@ -97,8 +113,8 @@ for path in sorted(DATA.glob("ECAN_*.csv")):
         "lon": first["lon"],
         "elevation_m": first["altitude"],
         "resolution": "sub-daily" if has_time else "unknown",
-        "record_start": "",
-        "record_end": "",
+        "record_start": start,
+        "record_end": end,
         "n_records": len(df),
         "source_file": path.name,
         "notes": "" if has_time else "no timestamp column - needs re-export",
