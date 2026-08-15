@@ -9,33 +9,34 @@ DATA = Path(__file__).parent / "datasets"
 
 
 EXTRA = {
-    "Bottle Lake Forest":   {"elevation_m": 5,   "zone": "Plains"},
+    "Bottle Lake":   {"elevation_m": 5,   "zone": "Plains"},
     "Christchurch Aws":     {"elevation_m": 30,  "zone": "Plains"},
     "Diamond Harbour":      {"elevation_m": 235, "zone": "Banks Peninsula"},
     "Diamond Harbour Ews":  {"elevation_m": 124, "zone": "Banks Peninsula"},
     "Early Valley":         {"elevation_m": 306, "zone": "Port Hills"},
-    "Godley Head":          {"elevation_m": 141, "zone": "Banks Peninsula"},
-    "Lincoln":              {"elevation_m": 16,  "zone": "Plains"},
-    "McLeans":              {"elevation_m": 33,  "zone": "Plains"},
-    "Motukarara":           {"elevation_m": 20,  "zone": "Plains"},
-    "Rangiora":             {"elevation_m": 12,  "zone": "Plains"},
+    "Godley Head":        {"elevation_m": 141, "zone": "Banks Peninsula"},
+    "Lincoln":         {"elevation_m": 16,  "zone": "Plains"},
+    "McLeans":         {"elevation_m": 33,  "zone": "Plains"},
+    "Motukarara":          {"elevation_m": 20,  "zone": "Plains"},
+    "Rangiora":          {"elevation_m": 12,  "zone": "Plains"},
     "Christchurch Aero":    {"elevation_m": 31,  "zone": "Plains"},
     "Christchurch Gardens": {"elevation_m": 12,  "zone": "Plains"},
+    "McQueens Valley": {"zone": "Banks Peninsula"},
 
     # ECAN__________________________________________
     "Banks Peninsula at Kaituna Valley": {"zone": "Banks Peninsula"},
-    "Barrys Bay at Hilltop":             {"zone": "Banks Peninsula"},
+    "Barrys Bay at Hilltop":              {"zone": "Banks Peninsula"},
     "Christchurch, Kyle St EWS":         {"zone": "Plains"},
     "Cust Main Drain at Threlkelds Road": {"zone": "Plains"},
-    "Halswell at Coopers Knob":          {"zone": "Port Hills"},
+    "Halswell at Coopers Knob":        {"zone": "Port Hills"},
     "Halswell at Ryans Bge":             {"zone": "Plains"},
-    "Halswell at Tai Tapu":              {"zone": "Plains"},
-    "Heathcote at Hoon Hay":             {"zone": "Port Hills"},  
-    "Hukahuka at Summit":                {"zone": "Port Hills"},
-    "Kaituna Valley at Tophouse":        {"zone": "Banks Peninsula"},
-    "Kaituna at Kaituna Valley Rd":      {"zone": "Banks Peninsula"},
-    "Lincoln, Broadfield Ews":           {"zone": "Plains"},
-    "Waimakariri at Kainga Yard":        {"zone": "Plains"},
+    "Halswell at Tai Tapu":           {"zone": "Plains"},
+    "Heathcote at Hoon Hay":         {"zone": "Port Hills"},  
+    "Hukahuka at Summit":            {"zone": "Port Hills"},
+    "Kaituna Valley at Tophouse":     {"zone": "Banks Peninsula"},
+    "Kaituna at Kaituna Valley Rd":    {"zone": "Banks Peninsula"},
+    "Lincoln, Broadfield Ews":      {"zone": "Plains"},
+    "Waimakariri at Kainga Yard":     {"zone": "Plains"},
 }
 
 DUPLICATE_WATCH = [
@@ -53,13 +54,7 @@ NIWA = {
                                     "lat": -43.5310, "lon": 172.6200},
 }
 
-def has_real_timestamp(df):
-    candidates = [
-        c for c in df.columns
-        if ("time" in c.lower() or "date" in c.lower())
-        and c.lower() != "modified_date"
-    ]
-    return len(candidates) > 0
+
 
 def time_span(df):
     """returns first and last observation dates"""
@@ -82,8 +77,8 @@ rows = []
 for path in sorted(DATA.glob("FENZ_*.csv")):
     df = pd.read_csv(path)
     first = df.iloc[0]
-    has_time = has_real_timestamp(df)
-    start, end = time_span(df)    
+    start, end = time_span(df)
+    has_time = start != ""   
     rows.append({
         "station_name": first["name"],
         "provider": "FENZ",
@@ -103,8 +98,8 @@ for path in sorted(DATA.glob("FENZ_*.csv")):
 for path in sorted(DATA.glob("ECAN_*.csv")):
     df = pd.read_csv(path)
     first = df.iloc[0]
-    has_time = has_real_timestamp(df)
     start, end = time_span(df)
+    has_time = start != ""
     rows.append({
         "station_name": first["name"],
         "provider": "ECAN",
