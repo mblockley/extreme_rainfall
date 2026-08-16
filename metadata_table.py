@@ -48,10 +48,12 @@ DUPLICATE_WATCH = [
 
 
 NIWA = {
-    "chch_aero_rain_daily.csv":    {"name": "Christchurch Aero",    "id": "?????",
-                                    "lat": -43.4894, "lon": 172.5325},
-    "chch_gardens_rain_daily.csv": {"name": "Christchurch Gardens", "id": "????",
-                                    "lat": -43.5310, "lon": 172.6200},
+    "chch_aero_rain_hourly.csv":    {"name": "Christchurch Aero",    "id": "4843",
+                                    "lat": -43.493, "lon": 172.537},
+    "chch_gardens_rain_hourly.csv": {"name": "Christchurch Gardens", "id": "44763",
+                                    "lat": -43.5294, "lon": 172.6200},
+    "akaroa_ews_rain_hourly.csv": {"name": "Akaroa EWS", "id": "36593",
+                                    "lat": -43.80938, "lon": 172.96574},
 }
 
 
@@ -152,4 +154,4 @@ out["elevation_m"] = out.apply(
 )
 
 out = out[["station_name", "provider", "station_id", "lat", "lon", "elevation_m",
-           "zone"
+           "zone"]]

@@ -1,3 +1,5 @@
+# Download FENZ Rainfall - extreme_rainfall
+
 from tethysts import Tethys
 import pandas as pd
 from pathlib import Path
@@ -63,21 +65,6 @@ for name, station_id in fenz_station_ids.items():
     # Turn the time index into a normal column
     df = df.reset_index()
 
-    # Check timestamp
-    if "time" in df.columns:
-
-        df["time"] = pd.to_datetime(
-            df["time"],
-            errors="coerce"
-        )
-
-        print("Timestamp column found.")
-        print("First timestamp:", df["time"].min())
-        print("Last timestamp:", df["time"].max())
-
-    else:
-
-        print("WARNING: No time column found.")
 
     # Create filename
     filename = (
