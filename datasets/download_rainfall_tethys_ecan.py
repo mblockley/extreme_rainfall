@@ -1,3 +1,5 @@
+# Download ECAN Rainfall - extreme_rainfall
+
 from tethysts import Tethys
 import pandas as pd
 from pathlib import Path
@@ -73,24 +75,8 @@ def download_station(ts, dataset_id, station, provider):
 
     df = results.to_dataframe()
 
-    # Make the time coordinate a normal column
+    # Turn the time index a normal column
     df = df.reset_index()
-
-    # Check whether time exists
-    if "time" in df.columns:
-
-        df["time"] = pd.to_datetime(
-            df["time"],
-            errors="coerce"
-        )
-
-        print("Timestamp column found.")
-        print("First timestamp:", df["time"].min())
-        print("Last timestamp:", df["time"].max())
-
-    else:
-
-        print("WARNING: No time column found.")
 
     # Create safe filename
     filename = (
