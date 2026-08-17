@@ -206,7 +206,7 @@ rangiora <- read_csv("datasets/FENZ_Rangiora.csv") |>
   select(time, rainfall, station, provider)
 
 #Combining datasets
-all_rain <- bind_rows(aero, gardens,banks_peninsula,barrys_bay,chch_aero, 
+all_rain <- bind_rows(aero,gardens,banks_peninsula,barrys_bay,chch_aero, 
                       chch_gardens,kyle_st,cust_main_drain,coopers_knob,ryans_bge,
                       tai_tapu,hoon_hay,summit,kaituna_valley_rd,tophouse,
                       lincoln_broadfield,mcqueens,kainga_yard,bottle_lake,chch_aws,
@@ -222,5 +222,19 @@ ggplot(all_rain, aes(x = time, y = rainfall)) +
   ) + theme_minimal()
 
 
+#Calculating extreme rainfall separately depending on the zone
+metadata <- read_csv("datasets/station_metadata.csv")
+
+all_rain <- all_rain |> 
+  left_join(metadata |>
+              select(station_name, provider, zone),
+            by = c("station" = "station_name", "provider" = "provider"))
 
   
+all_rain |>
+  group_by(zone) |>
+  summarise(
+    p90 = quantile(rainfall, 0.90, na.rm = TRUE),
+    p95 = quantile(rainfall, 0.95, na.rm = TRUE),
+    p99 = quantile(rainfall, 0.99, na.rm = TRUE)
+  )
