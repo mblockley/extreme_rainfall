@@ -11,3 +11,4 @@ venv/
 datasets/ECAN_Waimakariri_at_Kainga_Yard.csv
 datasets/ECAN_Christchurch_Gardens.csv
 >>>>>>> 34d02416f16b3cc888d9deb4e1dfb187a8c8a9b2
+datasets/all_rain.csv
