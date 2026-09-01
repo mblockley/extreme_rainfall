@@ -51,7 +51,7 @@ chch_gardens <- read_csv("datasets/ECAN_Christchurch_Gardens.csv") |>
 
 kyle_st <- read_csv("datasets/ECAN_Christchurch_Kyle_St_EWS.csv") |>
   mutate(time = `time`,
-         station = "Christchurch Kyle St EWS",
+         station = "Christchurch, Kyle St EWS",
          provider = "ECAN",
          rainfall = `precipitation`) |>
   select(time, rainfall, station, provider)
@@ -72,7 +72,7 @@ coopers_knob <- read_csv("datasets/ECAN_Halswell_at_Coopers_Knob.csv") |>
 
 ryans_bge <- read_csv("datasets/ECAN_Halswell_at_Ryans_Bge.csv") |>
   mutate(time = `time`,
-         station = "Halswell at Ryans Bridge",
+         station = "Halswell at Ryans Bge",
          provider = "ECAN",
          rainfall = `precipitation`) |>
   select(time, rainfall, station, provider)
@@ -114,7 +114,7 @@ tophouse <- read_csv("datasets/ECAN_Kaituna_Valley_at_Tophouse.csv") |>
 
 lincoln_broadfield <- read_csv("datasets/ECAN_Lincoln_Broadfield_EWS.csv") |>
   mutate(time = `time`,
-         station = "Lincoln Broadfield EWS",
+         station = "Lincoln, Broadfield Ews",
          provider = "ECAN",
          rainfall = `precipitation`) |>
   select(time, rainfall, station, provider)
@@ -135,23 +135,23 @@ kainga_yard <- read_csv("datasets/ECAN_Waimakariri_at_Kainga_Yard.csv") |>
 
 #------------------FENZ Datasets -----------------------------------------------
 
-bottle_lake <- read_csv("datasets/FENZ_Bottle_Lake_Forest") |>
+bottle_lake <- read_csv("datasets/FENZ_Bottle_Lake_Forest.csv") |>
   mutate(time = `time`,
-         station = "Bottle Lake Forest",
+         station = "Bottle Lake",
          provider = "FENZ",
          rainfall = `precipitation`) |>
   select(time, rainfall, station, provider)
 
 chch_aws <- read_csv("datasets/FENZ_Christchurch_AWS.csv") |>
   mutate(time = `time`,
-         station = "Christchurch AWS",
+         station = "Christchurch Aws",
          provider = "FENZ",
          rainfall = `precipitation`) |>
   select(time, rainfall, station, provider)
 
 diamond_harbour_ews <- read_csv("datasets/FENZ_Diamond_Harbour_EWS.csv") |>
   mutate(time = `time`,
-         station = "Diamond Harbour EWS",
+         station = "Diamond Harbour Ews",
          provider = "FENZ",
          rainfall = `precipitation`) |>
   select(time, rainfall, station, provider)
@@ -221,6 +221,7 @@ ggplot(all_rain, aes(x = time, y = rainfall)) +
     y = "Time",
   ) + theme_minimal()
 
+write.csv(all_rain)
 
 #Calculating extreme rainfall separately depending on the zone
 metadata <- read_csv("datasets/station_metadata.csv")
@@ -232,9 +233,12 @@ all_rain <- all_rain |>
 
   
 all_rain |>
+  filter(rainfall > 0) |>
   group_by(zone) |>
   summarise(
     p90 = quantile(rainfall, 0.90, na.rm = TRUE),
     p95 = quantile(rainfall, 0.95, na.rm = TRUE),
-    p99 = quantile(rainfall, 0.99, na.rm = TRUE)
+    p99 = quantile(rainfall, 0.99, na.rm = TRUE),
+    max = max(rainfall, na.rm = TRUE)
   )
+
