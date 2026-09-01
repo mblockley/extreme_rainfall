@@ -87,7 +87,7 @@ for path in sorted(DATA.glob("FENZ_*.csv")):
         "station_id": first["ref"],
         "lat": first["lat"],
         "lon": first["lon"],
-        "resolution": "sub-daily" if has_time else "unknown",
+        "resolution": "hourly" if has_time else "unknown",
         "record_start": start,
         "record_end": end,
         "n_records": len(df),
@@ -109,7 +109,7 @@ for path in sorted(DATA.glob("ECAN_*.csv")):
         "lat": first["lat"],
         "lon": first["lon"],
         "elevation_m": first["altitude"],
-        "resolution": "sub-daily" if has_time else "unknown",
+        "resolution": "hourly" if has_time else "unknown",
         "record_start": start,
         "record_end": end,
         "n_records": len(df),
@@ -131,12 +131,12 @@ for filename, info in NIWA.items():
         "station_id": info["id"],
         "lat": info["lat"],
         "lon": info["lon"],
-        "resolution": "daily",
+        "resolution": "hourly",
         "record_start": time.min().date(),
         "record_end": time.max().date(),
         "n_records": len(df),
         "source_file": path.name,
-        "notes": "daily total is the 24 h to 09:00 NZST",
+        "notes": "" if has_time else "no timestamp column - needs re-export",
     })
 
 # ---- add elevation _________________
@@ -157,3 +157,4 @@ out = out[["station_name", "provider", "station_id", "lat", "lon", "elevation_m"
            "zone","resolution","record_start","record_end","n_records","source_file","notes"]]
 
 out.to_csv(DATA / "station_metadata.csv", index=False)
+
