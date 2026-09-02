@@ -3,35 +3,49 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 
-rain = pd.read_csv("datasets/all_rain.csv")
+station_name = "Halswell at Coopers Knob"
+
+
+## 1. Load Station metadata
 metadata = pd.read_csv("datasets/station_metadata.csv")
 
-rain["time"] = pd.to_datetime(rain["time"], utc = True)
+station_info = metadata[
+    (metadata["station_name"] == station_name) &
+    (metadata["provider"] == "ECAN")
+].iloc[0]
 
-print("DateTime column type:", rain["time"].dtype)
-
-rain.head()
+file_path = "datasets/" + station_info["source_file"]
 
 
-## Selecting Coopers Knob
-coopers = rain[
-    rain["station"] == "Halswell at Coopers Knob"
-].copy()
+## 2. Load dataset
+rain = pd.read_csv(file_path)
+rain["time"] = pd.to_datetime(rain["time"])
 
 # How much data do we have, and over what time period?
-print("Number of days :", len(coopers))
-print("First day      :", coopers["time"].min().date())
-print("Last day       :", coopers["time"].max().date())
+print("Station                :", station_name)
+print("DateTime column type   :", rain["time"].dtype)
+print("Number of observations :", len(rain))
+print("First observation      :", rain["time"].min().date())
+print("Last observation       :", rain["time"].max().date())
+
+## 3. Select station data
+coopers = rain.copy()
+print("Number of observations :", len(rain))
+print("First day      :", rain["time"].min().date())
+print("Last day       :", rain["time"].max().date())
 
 # Add a "year" column — we'll use it later to look at trends over time.
 coopers["year"] = coopers["time"].dt.year
+
+
+## 4. Plot hourly rainfall
 
 # Draw the rainfall over the whole period, so we can SEE the spiky big hours.
 plt.figure(figsize=(10, 4))
 
 plt.plot(
     coopers["time"],
-    coopers["rainfall"]
+    coopers["precipitation"]
 )
 
 plt.title("Hourly rainfall at Halswell at Coopers Knob")
@@ -43,13 +57,14 @@ plt.show()
 plt.close()
 
 
-## Extreme daily rainfall
+## 5. Calculate daily rainfall
+
 coopers["date"] = coopers["time"].dt.date
 
 # create daily rainfall totals
 daily = (
     coopers
-    .groupby("date")["rainfall"]
+    .groupby("date")["precipitation"]
     .sum()
     .reset_index()
 )
@@ -57,8 +72,10 @@ daily = (
 daily["year"] = pd.to_datetime(daily["date"]).dt.year
 
 
+## 6. Find exteme rainfall days
+
 # Keeping only the days where it actually rained (1mm or more).
-rainy_days = daily[daily["rainfall"] >= 1.0]["rainfall"]
+rainy_days = daily[daily["precipitation"] >= 1.0]["precipitation"]
 
 # The cut-off ("threshold") is the 95th percentile of those rainy days 
 threshold = np.percentile(rainy_days, 95)
@@ -68,16 +85,17 @@ print(f"Our 'extreme' cut-off is {threshold:.1f} mm.")
 print(f"So any day with more than {threshold:.1f} mm of rain counts as extreme.")
 
 # Pull out the extreme days - the ones above our cut-off.
-extreme = daily[daily["rainfall"] > threshold]
+extreme = daily[daily["precipitation"] > threshold]
 
 print(f"We found {len(extreme)} extreme days out of {len(coopers)} total days.")
-extreme[["date", "rainfall"]].head()
+extreme[["date", "precipitation"]].head()
 
-# Second Figure
+
+## 7. Plot extreme rainfall days
 plt.figure(figsize=(10, 4))
 
 plt.hist(
-    extreme["rainfall"],
+    extreme["precipitation"],
     bins=20,
     color="tomato",
     edgecolor="white"
@@ -91,13 +109,15 @@ plt.savefig("outputs/ECAN_coopers/coopers_extreme_histogram.png")
 plt.show()
 plt.close()
 
+## 7. Fit the Generalised Pareto Distribution
+
 # Most extreme days are just above the cut-off, and a few are MUCH bigger.
 # That long tail to the right is what we want to describe with a curve.
 
 
 # We fit the curve to how far each extreme day is ABOVE the cut-off.
 # (This "amount above the cut-off" is what the GPD describes.)
-amount_above = extreme["rainfall"] - threshold
+amount_above = extreme["precipitation"] - threshold
 
 # scipy fits the curve and gives us the shape and scale numbers.
 # (floc=0 just tells it to measure from the cut-off, which is what we want.)
@@ -109,8 +129,9 @@ if shape < 0:
     print("The shape is negative, suggesting a natural upper limit to daily rain here.")
 else:
     print("The shape is positive, suggesting very large storms are possible.")
+  
     
-## Figure 3
+## Plot the GPD fit
 
 # Let's check the curve actually fits our data.
 # We draw the real extreme days (histogram) and the fitted curve on top.
@@ -132,10 +153,14 @@ plt.savefig("outputs/ECAN_coopers/coopers_real_extreme_hours.png")
 plt.show()
 plt.close()
 
-# How often do extreme days happen, on average per year?
+## 10. Plot how often extreme days occur
+
 n_years = coopers["year"].nunique()
 events_per_year = len(extreme) / n_years
 print(f"On average, {events_per_year:.1f} extreme days per year.\n")
+
+
+## 11. Calculate return periods
 
 # For a few return periods, estimate the rainfall amount using the fitted curve.
 for years in [2, 5, 10, 20, 50, 100]:
@@ -145,6 +170,9 @@ for years in [2, 5, 10, 20, 50, 100]:
     size = threshold + stats.genpareto.ppf(1 - 1/n_events, shape, loc, scale)
     print(f"1-in-{years:>3}-year storm: about {size:.0f} mm of rain in a day")
     
+
+## 12. Plot number of extreme days per year
+
 # Count the extreme days in each year.
 per_year = extreme.groupby("year").size()
 
