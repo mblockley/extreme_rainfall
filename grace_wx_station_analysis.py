@@ -30,9 +30,6 @@ print("Last observation       :", rain["time"].max().date())
 
 ## 3. Select station data
 coopers = rain.copy()
-print("Number of observations :", len(rain))
-print("First day      :", rain["time"].min().date())
-print("Last day       :", rain["time"].max().date())
 
 # Add a "year" column — we'll use it later to look at trends over time.
 coopers["year"] = coopers["time"].dt.year
@@ -69,10 +66,39 @@ daily = (
     .reset_index()
 )
 
-daily["year"] = pd.to_datetime(daily["date"]).dt.year
+daily["date"] = pd.to_datetime(daily["date"])
+daily["year"] = daily["date"].dt.year
+daily["month"] = daily["date"].dt.month
+
+## 6. Plot annual rainfall
+
+annual_rainfall = (
+    daily
+    .groupby("year")["precipitation"]
+    .sum()
+)
+
+plt.figure(figsize=(10, 4))
+
+plt.plot(
+    annual_rainfall.index,
+    annual_rainfall.values
+)
+
+plt.title("Annual rainfall at Halswell at Coopers Knob")
+plt.xlabel("Year")
+plt.ylabel("Annual rainfall (mm)")
+plt.grid(True)
+
+plt.savefig(
+    "outputs/ECAN_coopers/coopers_annual_rainfall.png"
+)
+
+plt.show()
+plt.close()
 
 
-## 6. Find exteme rainfall days
+## 7. Find exteme rainfall days
 
 # Keeping only the days where it actually rained (1mm or more).
 rainy_days = daily[daily["precipitation"] >= 1.0]["precipitation"]
@@ -87,11 +113,11 @@ print(f"So any day with more than {threshold:.1f} mm of rain counts as extreme."
 # Pull out the extreme days - the ones above our cut-off.
 extreme = daily[daily["precipitation"] > threshold]
 
-print(f"We found {len(extreme)} extreme days out of {len(coopers)} total days.")
+print(f"We found {len(extreme)} extreme days out of {len(daily)} total days.")
 extreme[["date", "precipitation"]].head()
 
 
-## 7. Plot extreme rainfall days
+## 8. Plot extreme rainfall days
 plt.figure(figsize=(10, 4))
 
 plt.hist(
@@ -108,12 +134,10 @@ plt.ylabel("Number of days")
 plt.savefig("outputs/ECAN_coopers/coopers_extreme_histogram.png")
 plt.show()
 plt.close()
-
-## 7. Fit the Generalised Pareto Distribution
-
 # Most extreme days are just above the cut-off, and a few are MUCH bigger.
 # That long tail to the right is what we want to describe with a curve.
 
+## 9. Fit the Generalised Pareto Distribution
 
 # We fit the curve to how far each extreme day is ABOVE the cut-off.
 # (This "amount above the cut-off" is what the GPD describes.)
@@ -153,7 +177,7 @@ plt.savefig("outputs/ECAN_coopers/coopers_real_extreme_hours.png")
 plt.show()
 plt.close()
 
-## 10. Plot how often extreme days occur
+## 10. Calculating extreme days per year
 
 n_years = coopers["year"].nunique()
 events_per_year = len(extreme) / n_years
@@ -187,3 +211,74 @@ plt.legend()
 plt.savefig("outputs/ECAN_coopers/coopers_extreme_days_each_year.png")
 plt.show()  
 plt.close()
+
+
+## 13. Fitting seasonal Patterns
+
+daily["season"] = daily["month"].map({
+  12: "Summer",
+  1: "Summer",
+  2: "Summer",
+  3: "Autumn",
+  4: "Autumn",
+  5: "Autumn",
+  6: "Winter",
+  7: "Winter",
+  8: "Winter",
+  9: "Spring",
+  10: "Spring",
+  11: "Spring"
+})
+
+extreme = daily[daily["precipitation"] > threshold].copy()
+
+seasonal_rainfall = (
+    daily
+    .groupby("season")["precipitation"]
+    .mean()
+)
+
+print("\nAverage daily rainfall by season:")
+print(seasonal_rainfall)
+
+
+extreme_seasonal_rainfall = (
+    extreme
+    .groupby("season")
+    .size()
+)
+
+print("\nExtreme rainfall days by season:")
+print(extreme_seasonal_rainfall)
+
+
+# 14. Plotting seasonal Patterns
+
+# Avg Daily Rainfall
+plt.figure(figsize=(10, 4))
+
+plt.bar(seasonal_rainfall.index,seasonal_rainfall.values,color="steelblue")
+
+plt.title("Average daily rainfall by season")
+plt.xlabel("Season")
+plt.ylabel("Average daily rainfall (mm)")
+
+plt.savefig("outputs/ECAN_coopers/coopers_seasonal_rainfall.png")
+plt.show()
+plt.close()
+
+# Extreme rainfall
+
+plt.figure(figsize=(10, 4))
+
+plt.bar(extreme_seasonal_rainfall.index,extreme_seasonal_rainfall.values,
+        color="steelblue")
+
+plt.title("Extreme rainfall days by season")
+plt.xlabel("Season")
+plt.ylabel("Number of extreme days")
+
+plt.savefig("outputs/ECAN_coopers/coopers_extreme_days_by_season.png")
+plt.show()
+plt.close()
+
