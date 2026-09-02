@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 
-station_name = "Halswell at Coopers Knob"
+station_name = "Christchurch Gardens"
 
 
 ## 1. Load Station metadata
@@ -11,7 +11,7 @@ metadata = pd.read_csv("datasets/station_metadata.csv")
 
 station_info = metadata[
     (metadata["station_name"] == station_name) &
-    (metadata["provider"] == "ECAN")
+    (metadata["provider"] == "NIWA")
 ].iloc[0]
 
 file_path = "datasets/" + station_info["source_file"]
@@ -19,20 +19,21 @@ file_path = "datasets/" + station_info["source_file"]
 
 ## 2. Load dataset
 rain = pd.read_csv(file_path)
-rain["time"] = pd.to_datetime(rain["time"])
+rain["Observation time UTC"] = pd.to_datetime(rain["Observation time UTC"])
 
 # How much data do we have, and over what time period?
 print("Station                :", station_name)
-print("DateTime column type   :", rain["time"].dtype)
+print("DateTime column type   :", rain["Observation time UTC"].dtype)
 print("Number of observations :", len(rain))
-print("First observation      :", rain["time"].min().date())
-print("Last observation       :", rain["time"].max().date())
+print("First observation      :", rain["Observation time UTC"].min().date())
+print("Last observation       :", rain["Observation time UTC"].max().date())
+
 
 ## 3. Select station data
-coopers = rain.copy()
+df = rain.copy()
 
-# Add a "year" column — we'll use it later to look at trends over time.
-coopers["year"] = coopers["time"].dt.year
+# Add a "year" column — we'll use it later to look at trends over Observation time UTC.
+df["year"] = df["Observation time UTC"].dt.year
 
 
 ## 4. Plot hourly rainfall
@@ -41,27 +42,27 @@ coopers["year"] = coopers["time"].dt.year
 plt.figure(figsize=(10, 4))
 
 plt.plot(
-    coopers["time"],
-    coopers["precipitation"]
+    df["Observation time UTC"],
+    df["Rainfall [mm]"]
 )
 
-plt.title("Hourly rainfall at Halswell at Coopers Knob")
+plt.title(f"Hourly rainfall at {station_name}")
 plt.xlabel("Year")
 plt.ylabel("Rainfall (mm)")
 
-plt.savefig("outputs/ECAN_coopers/coopers_timeseries.png")
+plt.savefig("outputs/NIWA_chch_gardens/chch_gardens_timeseries.png")
 plt.show()
 plt.close()
 
 
 ## 5. Calculate daily rainfall
 
-coopers["date"] = coopers["time"].dt.date
+df["date"] = df["Observation time UTC"].dt.date
 
 # create daily rainfall totals
 daily = (
-    coopers
-    .groupby("date")["precipitation"]
+    df
+    .groupby("date")["Rainfall [mm]"]
     .sum()
     .reset_index()
 )
@@ -74,7 +75,7 @@ daily["month"] = daily["date"].dt.month
 
 annual_rainfall = (
     daily
-    .groupby("year")["precipitation"]
+    .groupby("year")["Rainfall [mm]"]
     .sum()
 )
 
@@ -85,14 +86,12 @@ plt.plot(
     annual_rainfall.values
 )
 
-plt.title("Annual rainfall at Halswell at Coopers Knob")
+plt.title(f"Annual rainfall at {station_name}")
 plt.xlabel("Year")
 plt.ylabel("Annual rainfall (mm)")
 plt.grid(True)
 
-plt.savefig(
-    "outputs/ECAN_coopers/coopers_annual_rainfall.png"
-)
+plt.savefig("outputs/NIWA_chch_gardens/chch_gardens_annual_rainfall.png")
 
 plt.show()
 plt.close()
@@ -101,7 +100,7 @@ plt.close()
 ## 7. Find exteme rainfall days
 
 # Keeping only the days where it actually rained (1mm or more).
-rainy_days = daily[daily["precipitation"] >= 1.0]["precipitation"]
+rainy_days = daily[daily["Rainfall [mm]"] >= 1.0]["Rainfall [mm]"]
 
 # The cut-off ("threshold") is the 95th percentile of those rainy days 
 threshold = np.percentile(rainy_days, 95)
@@ -111,17 +110,17 @@ print(f"Our 'extreme' cut-off is {threshold:.1f} mm.")
 print(f"So any day with more than {threshold:.1f} mm of rain counts as extreme.")
 
 # Pull out the extreme days - the ones above our cut-off.
-extreme = daily[daily["precipitation"] > threshold]
+extreme = daily[daily["Rainfall [mm]"] > threshold]
 
 print(f"We found {len(extreme)} extreme days out of {len(daily)} total days.")
-extreme[["date", "precipitation"]].head()
+extreme[["date", "Rainfall [mm]"]].head()
 
 
 ## 8. Plot extreme rainfall days
 plt.figure(figsize=(10, 4))
 
 plt.hist(
-    extreme["precipitation"],
+    extreme["Rainfall [mm]"],
     bins=20,
     color="tomato",
     edgecolor="white"
@@ -131,7 +130,7 @@ plt.title("How big were the extreme rainfall days?")
 plt.xlabel("Rainfall (mm)")
 plt.ylabel("Number of days")
 
-plt.savefig("outputs/ECAN_coopers/coopers_extreme_histogram.png")
+plt.savefig("outputs/NIWA_chch_gardens/chch_gardens_extreme_histogram.png")
 plt.show()
 plt.close()
 # Most extreme days are just above the cut-off, and a few are MUCH bigger.
@@ -141,7 +140,7 @@ plt.close()
 
 # We fit the curve to how far each extreme day is ABOVE the cut-off.
 # (This "amount above the cut-off" is what the GPD describes.)
-amount_above = extreme["precipitation"] - threshold
+amount_above = extreme["Rainfall [mm]"] - threshold
 
 # scipy fits the curve and gives us the shape and scale numbers.
 # (floc=0 just tells it to measure from the cut-off, which is what we want.)
@@ -173,13 +172,13 @@ plt.xlabel("Rainfall above the cut-off (mm)")
 plt.ylabel("How common")
 plt.legend()
 
-plt.savefig("outputs/ECAN_coopers/coopers_real_extreme_hours.png")
+plt.savefig("outputs/NIWA_chch_gardens/chch_gardens_real_extreme_hours.png")
 plt.show()
 plt.close()
 
 ## 10. Calculating extreme days per year
 
-n_years = coopers["year"].nunique()
+n_years = df["year"].nunique()
 events_per_year = len(extreme) / n_years
 print(f"On average, {events_per_year:.1f} extreme days per year.\n")
 
@@ -208,7 +207,7 @@ plt.xlabel("Year")
 plt.ylabel("Number of extreme days")
 plt.legend()
 
-plt.savefig("outputs/ECAN_coopers/coopers_extreme_days_each_year.png")
+plt.savefig("outputs/NIWA_chch_gardens/chch_gardens_extreme_days_each_year.png")
 plt.show()  
 plt.close()
 
@@ -230,11 +229,11 @@ daily["season"] = daily["month"].map({
   11: "Spring"
 })
 
-extreme = daily[daily["precipitation"] > threshold].copy()
+extreme = daily[daily["Rainfall [mm]"] > threshold].copy()
 
 seasonal_rainfall = (
     daily
-    .groupby("season")["precipitation"]
+    .groupby("season")["Rainfall [mm]"]
     .mean()
 )
 
@@ -259,11 +258,11 @@ plt.figure(figsize=(10, 4))
 
 plt.bar(seasonal_rainfall.index,seasonal_rainfall.values,color="steelblue")
 
-plt.title("Average daily rainfall by season")
+plt.title(f"Average daily rainfall by season at {station_name}")
 plt.xlabel("Season")
 plt.ylabel("Average daily rainfall (mm)")
 
-plt.savefig("outputs/ECAN_coopers/coopers_seasonal_rainfall.png")
+plt.savefig("outputs/NIWA_chch_gardens/chch_gardens_seasonal_rainfall.png")
 plt.show()
 plt.close()
 
@@ -274,11 +273,11 @@ plt.figure(figsize=(10, 4))
 plt.bar(extreme_seasonal_rainfall.index,extreme_seasonal_rainfall.values,
         color="steelblue")
 
-plt.title("Extreme rainfall days by season")
+plt.title(f"Extreme rainfall days by season at {station_name}")
 plt.xlabel("Season")
 plt.ylabel("Number of extreme days")
 
-plt.savefig("outputs/ECAN_coopers/coopers_extreme_days_by_season.png")
+plt.savefig("outputs/NIWA_chch_gardens/chch_gardens_extreme_days_by_season.png")
 plt.show()
 plt.close()
 
