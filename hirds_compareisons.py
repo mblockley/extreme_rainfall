@@ -46,89 +46,96 @@ HIRDS_ZIP_LOOKUP = {
     ("Akaroa EWS", "NIWA"): "Akaroa EWS.zip",
 }
 
-#change the station name here to see graph for specficic data
-STATION_NAME = "Akaroa EWS"
-PROVIDER = "NIWA"
-HIRDS_ZIP = HIRDS_ZIP_LOOKUP[(STATION_NAME, PROVIDER)]
+for (STATION_NAME, PROVIDER), HIRDS_ZIP in HIRDS_ZIP_LOOKUP.items():
 
 
-#get the thresholds 10 and 100 year rain thresholds for particualar station.
-def get_hirds_thresholds(hirds_zip_name, duration="24h"):
-    zip_path = f"{DATA}/HIRDS/{hirds_zip_name}"
-    with zipfile.ZipFile(zip_path) as z:
-        with z.open("depth_report.csv") as f:
-            lines = [line.decode("utf-8") for line in f.readlines()]
+    #get the thresholds 10 and 100 year rain thresholds for particualar station.
+    def get_hirds_thresholds(hirds_zip_name, duration="24h"):
+        zip_path = f"{DATA}/HIRDS/{hirds_zip_name}"
+        with zipfile.ZipFile(zip_path) as z:
+            with z.open("depth_report.csv") as f:
+                lines = [line.decode("utf-8") for line in f.readlines()]
 
-        
-        start = next(i for i, line in enumerate(lines) if "Historical Data" in line) + 1
-        header = lines[start].strip().split(",")
-        dur_col = header.index(duration)
-        ari_col = header.index("ARI")
+            
+            start = next(i for i, line in enumerate(lines) if "Historical Data" in line) + 1
+            header = lines[start].strip().split(",")
+            dur_col = header.index(duration)
+            ari_col = header.index("ARI")
 
-    thresholds = {}
-    for line in lines[start + 1: start + 13]:  
-        parts = line.strip().split(",")
-        if len(parts) < len(header):
-            break
-        thresholds[float(parts[ari_col])] = float(parts[dur_col])
-    return thresholds
-
-
-thresholds = get_hirds_thresholds(HIRDS_ZIP, DURATION)
-threshold_10yr = thresholds[10.0]
-threshold_100yr = thresholds[100.0]
+        thresholds = {}
+        for line in lines[start + 1: start + 13]:  
+            parts = line.strip().split(",")
+            if len(parts) < len(header):
+                break
+            thresholds[float(parts[ari_col])] = float(parts[dur_col])
+        return thresholds
 
 
-print(f" HIRDS 24hr rainfall for  {STATION_NAME} : 10-yr ARI:  {threshold_10yr} mm, 100-yr ARI:  {threshold_100yr} mm")
+    thresholds = get_hirds_thresholds(HIRDS_ZIP, DURATION)
+    threshold_10yr = thresholds[10.0]
+    threshold_100yr = thresholds[100.0]
+
+
+    print(f" HIRDS 24hr rainfall for  {STATION_NAME} : 10-yr ARI:  {threshold_10yr} mm, 100-yr ARI:  {threshold_100yr} mm")
 
 
 
-#get the stations own data
-metadata = pd.read_csv(f"{DATA}/station_metadata.csv")
-station_info = metadata[
-    (metadata["station_name"] == STATION_NAME) & (metadata["provider"] == PROVIDER)
-].iloc[0]
-file_path = f"{DATA}/{station_info['source_file']}"
+    #get the stations own data
+    metadata = pd.read_csv(f"{DATA}/station_metadata.csv")
+    station_info = metadata[
+        (metadata["station_name"] == STATION_NAME) & (metadata["provider"] == PROVIDER)
+    ].iloc[0]
+    file_path = f"{DATA}/{station_info['source_file']}"
 
-rain = pd.read_csv(file_path)
+      
 
-
-#differant files/stations have differant timestamps so change all 3 of the data prociders to a 24hr total
-if PROVIDER == "NIWA":
-    rain["ts"] = pd.to_datetime(rain["Observation time UTC"])
-    value_col = "Rainfall [mm]"
-    boundary_shift_hours = 21
-else:
-    rain["ts"] = pd.to_datetime(rain["time"])
-    value_col = "precipitation"
-    boundary_shift_hours = 9
-
-shifted = rain["ts"] - pd.Timedelta(hours=boundary_shift_hours)
-rain["date"] = shifted.dt.floor("D")
-daily = rain.groupby("date", as_index=False)[value_col].sum()
-daily = daily.rename(columns={value_col: "rain_mm"})
+    try:
+        rain = pd.read_csv(file_path)
+    except FileNotFoundError:
+        print("coudlnt find the file")
+        continue
 
 
+    #differant files/stations have differant timestamps so change all 3 of the data prociders to a 24hr total
+    if PROVIDER == "NIWA":
+        rain["ts"] = pd.to_datetime(rain["Observation time UTC"])
+        value_col = "Rainfall [mm]"
+        boundary_shift_hours = 21
+    else:
+        rain["ts"] = pd.to_datetime(rain["time"])
+        value_col = "precipitation"
+        boundary_shift_hours = 9
 
-#show what days exceeded the prediected 10/100 year predictions
-exceed_10yr = daily[daily["rain_mm"] >= threshold_10yr].sort_values("rain_mm", ascending=False)
-exceed_100yr = daily[daily["rain_mm"] >= threshold_100yr].sort_values("rain_mm", ascending=False)
-
-print(f"\nDays exceeding the 10-yr depth: {len(exceed_10yr)}")
-print(f"Days exceeding the 100-yr depth: {len(exceed_100yr)}")
+    shifted = rain["ts"] - pd.Timedelta(hours=boundary_shift_hours)
+    rain["date"] = shifted.dt.floor("D")
+    daily = rain.groupby("date", as_index=False)[value_col].sum()
+    daily = daily.rename(columns={value_col: "rain_mm"})
 
 
 
-#plot
-plt.figure(figsize=(10, 4))
-plt.plot(daily["date"], daily["rain_mm"], color="blue", linewidth=0.7)
-plt.axhline(threshold_10yr, color="orange", linestyle="--", label=f"10-yr")
-plt.axhline(threshold_100yr, color="red", linestyle="--", label=f"100-yr")
-plt.title(f"{STATION_NAME} daily rainfall vs HIRDS return periods")
-plt.xlabel("Date")
-plt.ylabel("Daily rainfall (mm)")
-plt.legend()
-plt.tight_layout()
-plt.savefig(f"outputs/{PROVIDER}_hirds_{STATION_NAME.lower().replace(' ', '_')}.png")
-plt.show()
-plt.close()
+    #show what days exceeded the prediected 10/100 year predictions
+    exceed_10yr = daily[daily["rain_mm"] >= threshold_10yr].sort_values("rain_mm", ascending=False)
+    exceed_100yr = daily[daily["rain_mm"] >= threshold_100yr].sort_values("rain_mm", ascending=False)
+
+    print(f"\nDays exceeding the 10-yr depth: {len(exceed_10yr)}")
+    print(f"Days exceeding the 100-yr depth: {len(exceed_100yr)}")
+
+
+    
+    #plot
+    plt.figure(figsize=(10, 4))
+    plt.plot(daily["date"], daily["rain_mm"], color="blue", linewidth=0.7)
+    plt.axhline(threshold_10yr, color="orange", linestyle="--", label=f"10-yr")
+    plt.axhline(threshold_100yr, color="red", linestyle="--", label=f"100-yr")
+    for _, r in exceed_10yr.iterrows():
+        plt.annotate(r["date"].strftime("%d %b %Y"), (r["date"], r["rain_mm"]),
+                    textcoords="offset points", xytext=(0, 8), ha="center",
+                    fontsize=7, rotation=45)
+    plt.title(f"{STATION_NAME} daily rainfall vs HIRDS return periods")
+    plt.xlabel("Date")
+    plt.ylabel("Daily rainfall (mm)")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(f"outputs/HIRDS/{PROVIDER}_hirds_{STATION_NAME.lower().replace(' ', '_')}.png")
+    
+    plt.close()
