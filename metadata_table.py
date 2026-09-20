@@ -9,18 +9,19 @@ DATA = Path(__file__).parent / "datasets"
 
 
 EXTRA = {
-    "Bottle Lake":   {"elevation_m": 5,   "zone": "Plains"},
+    "Bottle Lake":          {"elevation_m": 5,   "zone": "Plains"},
     "Christchurch Aws":     {"elevation_m": 30,  "zone": "Plains"},
     "Diamond Harbour":      {"elevation_m": 235, "zone": "Banks Peninsula"},
     "Diamond Harbour Ews":  {"elevation_m": 124, "zone": "Banks Peninsula"},
     "Early Valley":         {"elevation_m": 306, "zone": "Port Hills"},
-    "Godley Head":        {"elevation_m": 141, "zone": "Banks Peninsula"},
-    "Lincoln":         {"elevation_m": 16,  "zone": "Plains"},
-    "McLeans":         {"elevation_m": 33,  "zone": "Plains"},
-    "Motukarara":          {"elevation_m": 20,  "zone": "Plains"},
-    "Rangiora":          {"elevation_m": 12,  "zone": "Plains"},
+    "Godley Head":          {"elevation_m": 141, "zone": "Banks Peninsula"},
+    "Lincoln":              {"elevation_m": 16,  "zone": "Plains"},
+    "McLeans":              {"elevation_m": 33,  "zone": "Plains"},
+    "Motukarara":           {"elevation_m": 20,  "zone": "Plains"},
+    "Rangiora":             {"elevation_m": 12,  "zone": "Plains"},
     "Christchurch Aero":    {"elevation_m": 31,  "zone": "Plains"},
     "Christchurch Gardens": {"elevation_m": 12,  "zone": "Plains"},
+    "Akaroa EWS":           {"elevation_m": 45,  "zone": "Banks Peninsula"},
     "McQueens Valley": {"zone": "Banks Peninsula"},
 
     # ECAN__________________________________________
@@ -48,12 +49,12 @@ DUPLICATE_WATCH = [
 
 
 NIWA = {
-    "chch_aero_rain_hourly.csv":    {"name": "Christchurch Aero",    "id": "4843",
+    "NIWA_chch_aero.csv":    {"name": "Christchurch Aero",    "id": "4843",
                                     "lat": -43.493, "lon": 172.537},
-    "chch_gardens_rain_hourly.csv": {"name": "Christchurch Gardens", "id": "44763",
+    "NIWA_chch_gardens.csv": {"name": "Christchurch Gardens", "id": "44763",
                                     "lat": -43.5294, "lon": 172.6200},
-    "akaroa_ews_rain_hourly.csv": {"name": "Akaroa EWS", "id": "36593",
-                                    "lat": -43.80938, "lon": 172.96574},
+    "NIWA_Akaroa_EWS.csv": {"name": "Akaroa EWS", "id": "36593",
+                                    "lat": -43.80938, "lon": 172.96574}
 }
 
 
@@ -157,4 +158,5 @@ out = out[["station_name", "provider", "station_id", "lat", "lon", "elevation_m"
            "zone","resolution","record_start","record_end","n_records","source_file","notes"]]
 
 out.to_csv(DATA / "station_metadata.csv", index=False)
+
 
