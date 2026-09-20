@@ -9,6 +9,7 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 import contextily as cx
 from pathlib import Path
+import os
 
 DATA = Path("datasets")
 OUT = Path("outputs")
@@ -39,7 +40,14 @@ for _, row in gdf_web.iterrows():
     ax.annotate(row["station_name"], (row.geometry.x, row.geometry.y), xytext=(5, 5), textcoords="offset points", fontsize=7, zorder=4,)
 
 # Basemap tiles
-cx.add_basemap(ax, source=cx.providers.CartoDB.Positron, zorder=1)
+carto_key = os.getenv("CARTO_API_KEY")
+
+carto_url = (
+  'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'
+  f'?key={carto_key}'
+)
+
+cx.add_basemap(ax, source=carto_url, zorder=1)
 
 ax.set_title("Canterbury Weather Stations", fontsize=14, fontweight="bold")
 ax.legend(title="Zone", loc="upper left", fontsize=9)
