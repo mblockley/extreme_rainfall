@@ -1,0 +1,82 @@
+station,metric,threshold_mm,n_years,trend,p_value,kendall_tau,sen_slope,significant_0.05
+Akaroa EWS,annual_total_rainfall,41.129999999999974,19,no trend,0.5756369136048027,0.09941520467836257,3.8454545454545412,False
+Akaroa EWS,annual_max_daily_rainfall,41.129999999999974,19,no trend,0.050090305683375025,0.3333333333333333,4.942857142857144,False
+Akaroa EWS,annual_extreme_days,41.129999999999974,19,no trend,0.1295535586769676,0.2573099415204678,0.16666666666666666,False
+Banks Peninsula at Kaituna Valley,annual_total_rainfall,42.0,58,no trend,0.697229407204877,0.03569267997580157,1.4322580645161247,False
+Banks Peninsula at Kaituna Valley,annual_max_daily_rainfall,42.0,58,no trend,1.0,0.0,0.0,False
+Banks Peninsula at Kaituna Valley,annual_extreme_days,42.0,58,no trend,0.6170402476504175,0.045372050816696916,0.0,False
+Barrys Bay at Hilltop,annual_total_rainfall,36.5,11,no trend,0.0867681727038756,-0.41818181818181815,-54.94999999999993,False
+Barrys Bay at Hilltop,annual_max_daily_rainfall,36.5,11,no trend,0.8762696636277618,-0.05454545454545454,-1.180000000000001,False
+Barrys Bay at Hilltop,annual_extreme_days,36.5,11,decreasing,0.04764131202657951,-0.4727272727272727,-0.4,True
+Bottle Lake,annual_total_rainfall,26.200000000000003,27,increasing,0.001151186389790615,0.301994301994302,0.0,True
+Bottle Lake,annual_max_daily_rainfall,26.200000000000003,27,increasing,0.001428704820307658,0.2962962962962963,0.0,True
+Bottle Lake,annual_extreme_days,26.200000000000003,27,increasing,0.0012578796987434693,0.29914529914529914,0.0,True
+Christchurch Aero,annual_total_rainfall,25.76999999999998,67,increasing,0.032116070856694545,0.17955676164631387,2.1454545454545477,True
+Christchurch Aero,annual_max_daily_rainfall,25.76999999999998,67,no trend,0.08723048148800339,0.14337403889642697,0.20000000000000018,False
+Christchurch Aero,annual_extreme_days,25.76999999999998,67,increasing,0.01859283940082035,0.19493441881501583,0.034482758620689655,True
+Christchurch Aws,annual_total_rainfall,27.519999999999975,3,no trend,1.0,-0.3333333333333333,-210.20000000000005,False
+Christchurch Aws,annual_max_daily_rainfall,27.519999999999975,3,no trend,1.0,-0.3333333333333333,-20.400000000000002,False
+Christchurch Aws,annual_extreme_days,27.519999999999975,3,no trend,0.2962698714842864,-1.0,-4.5,False
+Christchurch Gardens,annual_total_rainfall,21.900000000000002,144,increasing,0.0019397489204591167,0.17433954933954934,1.2773504273504281,True
+Christchurch Gardens,annual_max_daily_rainfall,21.900000000000002,144,increasing,0.022469386240377753,0.1283993783993784,0.0899999999999999,True
+Christchurch Gardens,annual_extreme_days,21.900000000000002,144,increasing,0.00892145911377229,0.145979020979021,0.011904761904761904,True
+"Christchurch, Kyle St EWS",annual_total_rainfall,102.59999999999992,1,insufficient data,,,,False
+"Christchurch, Kyle St EWS",annual_max_daily_rainfall,102.59999999999992,1,insufficient data,,,,False
+"Christchurch, Kyle St EWS",annual_extreme_days,102.59999999999992,1,insufficient data,,,,False
+Cust Main Drain at Threlkelds Road,annual_total_rainfall,24.5,23,no trend,0.7916993472718743,0.043478260869565216,1.9,False
+Cust Main Drain at Threlkelds Road,annual_max_daily_rainfall,24.5,23,no trend,0.4753325719707213,0.11067193675889328,0.5,False
+Cust Main Drain at Threlkelds Road,annual_extreme_days,24.5,23,no trend,0.46766133840636614,0.11067193675889328,0.0,False
+Diamond Harbour,annual_total_rainfall,1.77,6,no trend,0.2415665869689727,-0.3333333333333333,0.0,False
+Diamond Harbour,annual_max_daily_rainfall,1.77,6,no trend,0.2415665869689727,-0.3333333333333333,0.0,False
+Diamond Harbour,annual_extreme_days,1.77,6,no trend,0.2415665869689727,-0.3333333333333333,0.0,False
+Diamond Harbour Ews,annual_total_rainfall,29.200000000000003,4,no trend,0.7340951823194757,-0.3333333333333333,-235.73333333333332,False
+Diamond Harbour Ews,annual_max_daily_rainfall,29.200000000000003,4,no trend,0.3081795474670539,-0.6666666666666666,-13.033333333333331,False
+Diamond Harbour Ews,annual_extreme_days,29.200000000000003,4,no trend,0.3081795474670539,-0.6666666666666666,-0.8333333333333333,False
+Early Valley,annual_total_rainfall,36.58,6,no trend,0.7071142312899612,-0.2,-51.60000000000002,False
+Early Valley,annual_max_daily_rainfall,36.58,6,no trend,0.2596563563704499,0.4666666666666667,8.333333333333334,False
+Early Valley,annual_extreme_days,36.58,6,no trend,0.56609026181685,-0.26666666666666666,-0.5,False
+Godley Head,annual_total_rainfall,27.400000000000002,10,no trend,1.0,-0.022222222222222223,-4.633333333333326,False
+Godley Head,annual_max_daily_rainfall,27.400000000000002,10,no trend,0.8580276569875211,0.06666666666666667,0.3714285714285716,False
+Godley Head,annual_extreme_days,27.400000000000002,10,no trend,0.3579506423535421,-0.24444444444444444,-0.2857142857142857,False
+Halswell at Coopers Knob,annual_total_rainfall,28.5,32,no trend,0.7334457521953335,0.04435483870967742,1.8325000000000005,False
+Halswell at Coopers Knob,annual_max_daily_rainfall,28.5,32,no trend,0.8583869301154528,0.024193548387096774,0.08253968253968244,False
+Halswell at Coopers Knob,annual_extreme_days,28.5,32,no trend,0.5640737615018923,0.07258064516129033,0.0,False
+Halswell at Ryans Bge,annual_total_rainfall,26.5,26,no trend,0.7243397423849234,0.052307692307692305,1.7249999999999943,False
+Halswell at Ryans Bge,annual_max_daily_rainfall,26.5,26,no trend,0.08155996386077824,0.24615384615384617,0.5,False
+Halswell at Ryans Bge,annual_extreme_days,26.5,26,no trend,0.24259919741414726,0.16307692307692306,0.06666666666666667,False
+Halswell at Tai Tapu,annual_total_rainfall,15.600000000000001,33,no trend,0.35248687985389804,0.11553030303030302,2.7428571428571384,False
+Halswell at Tai Tapu,annual_max_daily_rainfall,15.600000000000001,33,no trend,0.5242207394761977,0.07954545454545454,0.10909090909090918,False
+Halswell at Tai Tapu,annual_extreme_days,15.600000000000001,33,no trend,0.4120368689401044,0.10037878787878787,0.0,False
+Heathcote at Hoon Hay,annual_total_rainfall,29.025,26,no trend,0.964838162737043,0.009230769230769232,1.1,False
+Heathcote at Hoon Hay,annual_max_daily_rainfall,29.025,26,no trend,0.4806051289858302,0.10153846153846154,0.43333333333333474,False
+Heathcote at Hoon Hay,annual_extreme_days,29.025,26,no trend,0.8060871043662252,0.036923076923076927,0.0,False
+Hukahuka at Summit,annual_total_rainfall,31.304999999999975,11,no trend,0.35020138917929566,-0.23636363636363636,-32.366666666666674,False
+Hukahuka at Summit,annual_max_daily_rainfall,31.304999999999975,11,no trend,1.0,-0.01818181818181818,-0.10000000000000142,False
+Hukahuka at Summit,annual_extreme_days,31.304999999999975,11,no trend,0.9356349784513363,0.03636363636363636,0.0,False
+Kaituna Valley at Tophouse,annual_total_rainfall,33.6,52,no trend,0.6989880754224531,-0.03770739064856712,-1.368235294117649,False
+Kaituna Valley at Tophouse,annual_max_daily_rainfall,33.6,52,no trend,0.5431427646472278,-0.058823529411764705,-0.13981900452488671,False
+Kaituna Valley at Tophouse,annual_extreme_days,33.6,52,no trend,0.61153152341484,0.049019607843137254,0.0,False
+Kaituna at Kaituna Valley Rd,annual_total_rainfall,28.5,32,no trend,0.506018838552545,-0.0846774193548387,-2.5096153846153846,False
+Kaituna at Kaituna Valley Rd,annual_max_daily_rainfall,28.5,32,no trend,0.43615823814397725,0.09879032258064516,0.256578947368421,False
+Kaituna at Kaituna Valley Rd,annual_extreme_days,28.5,32,no trend,0.9346757051560881,-0.012096774193548387,0.0,False
+Lincoln,annual_total_rainfall,26.1,4,no trend,0.3081795474670539,-0.6666666666666666,-165.16666666666666,False
+Lincoln,annual_max_daily_rainfall,26.1,4,no trend,0.7340951823194757,0.3333333333333333,1.4999999999999996,False
+Lincoln,annual_extreme_days,26.1,4,no trend,0.08942935902899363,-1.0,-1.3333333333333335,False
+"Lincoln, Broadfield Ews",annual_total_rainfall,25.8,19,no trend,0.8887055908352302,-0.029239766081871343,-0.9499999999999886,False
+"Lincoln, Broadfield Ews",annual_max_daily_rainfall,25.8,19,no trend,0.24799581483148536,0.19883040935672514,0.7625,False
+"Lincoln, Broadfield Ews",annual_extreme_days,25.8,19,no trend,0.9717138091093858,-0.011695906432748537,0.0,False
+McLeans,annual_total_rainfall,30.169999999999956,6,no trend,0.2415665869689727,-0.3333333333333333,0.0,False
+McLeans,annual_max_daily_rainfall,30.169999999999956,6,no trend,0.2415665869689727,-0.3333333333333333,0.0,False
+McLeans,annual_extreme_days,30.169999999999956,6,no trend,0.2415665869689727,-0.3333333333333333,0.0,False
+McQueens Valley,annual_total_rainfall,16.8,47,no trend,0.8257859588285852,0.02312673450508788,0.37894736842104904,False
+McQueens Valley,annual_max_daily_rainfall,16.8,47,no trend,0.526059046149757,-0.06475485661424607,-0.06666666666666662,False
+McQueens Valley,annual_extreme_days,16.8,47,no trend,0.4705444150304994,-0.0730804810360777,0.0,False
+Motukarara,annual_total_rainfall,22.950000000000003,28,increasing,1.3410445354633538e-05,0.5,19.511826086956525,True
+Motukarara,annual_max_daily_rainfall,22.950000000000003,28,increasing,7.048012184984742e-06,0.5158730158730159,1.6857142857142857,True
+Motukarara,annual_extreme_days,22.950000000000003,28,increasing,9.445166296417895e-06,0.5079365079365079,0.06458333333333333,True
+Rangiora,annual_total_rainfall,29.239999999999988,4,no trend,0.3081795474670539,-0.6666666666666666,-200.5,False
+Rangiora,annual_max_daily_rainfall,29.239999999999988,4,no trend,0.7340951823194757,-0.3333333333333333,-21.5,False
+Rangiora,annual_extreme_days,29.239999999999988,4,no trend,0.08942935902899363,-1.0,-2.0,False
+Waimakariri at Kainga Yard,annual_total_rainfall,18.0,74,no trend,0.6985020602164724,-0.03109959274342836,-0.34615384615384615,False
+Waimakariri at Kainga Yard,annual_max_daily_rainfall,18.0,74,no trend,0.15590293652106224,0.11292114031840059,0.1355555555555556,False
+Waimakariri at Kainga Yard,annual_extreme_days,18.0,74,increasing,0.013239768018017406,0.19585338763420956,0.045454545454545456,True

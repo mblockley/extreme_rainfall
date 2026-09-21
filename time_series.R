@@ -6,16 +6,23 @@ library(dplyr)
 library(ggplot2)
 
 #------------------NIWA Datasets -----------------------------------------------
-aero <- read_csv("datasets/chch_aero_rain_hourly.csv") |>
+aero <- read_csv("datasets/NIWA_chch_aero.csv") |>
   mutate(time = `Observation time UTC`,
          station = "Christchurch Aero",
          provider = "NIWA",
          rainfall = `Rainfall [mm]`) |>
   select(time, rainfall, station, provider)
 
-gardens <- read_csv("datasets/chch_gardens_rain_hourly.csv") |>
+gardens <- read_csv("datasets/NIWA_chch_gardens.csv") |>
   mutate(time = `Observation time UTC`,
          station = "Christchurch Gardens",
+         provider = "NIWA",
+         rainfall = `Rainfall [mm]`) |>
+  select(time, rainfall, station, provider)
+
+akaroa <- read_csv("datasets/NIWA_Akaroa_EWS.csv") |>
+  mutate(time = `Observation time UTC`,
+         station = "Akaroa EWS",
          provider = "NIWA",
          rainfall = `Rainfall [mm]`) |>
   select(time, rainfall, station, provider)
@@ -206,12 +213,15 @@ rangiora <- read_csv("datasets/FENZ_Rangiora.csv") |>
   select(time, rainfall, station, provider)
 
 #Combining datasets
-all_rain <- bind_rows(aero,gardens,banks_peninsula,barrys_bay,chch_aero, 
+all_rain <- bind_rows(aero,gardens,akaroa,banks_peninsula,barrys_bay,chch_aero, 
                       chch_gardens,kyle_st,cust_main_drain,coopers_knob,ryans_bge,
                       tai_tapu,hoon_hay,summit,kaituna_valley_rd,tophouse,
                       lincoln_broadfield,mcqueens,kainga_yard,bottle_lake,chch_aws,
                       diamond_harbour_ews,diamond_harbour,early_valley,godley_head,
                       lincoln,mcleans,motukarara,rangiora)
+
+all_rain <- all_rain |>
+  mutate(time = as.POSIXct(time, tz = "UTC"))
 
 ggplot(all_rain, aes(x = time, y = rainfall)) +
   geom_line() +
@@ -221,9 +231,8 @@ ggplot(all_rain, aes(x = time, y = rainfall)) +
     y = "Time",
   ) + theme_minimal()
 
-write.csv(all_rain)
 
-#Calculating extreme rainfall separately depending on the zone
+# adding station metadata and zones
 metadata <- read_csv("datasets/station_metadata.csv")
 
 all_rain <- all_rain |> 
@@ -231,7 +240,17 @@ all_rain <- all_rain |>
               select(station_name, provider, zone),
             by = c("station" = "station_name", "provider" = "provider"))
 
-  
+print(class(all_rain$time))
+print(head(all_rain$time))
+
+# saving all_rain into a csv
+write_csv(
+  all_rain,
+  "datasets/all_rain.csv"
+)
+
+
+#Calculating extreme rainfall separately depending on the zone  
 all_rain |>
   filter(rainfall > 0) |>
   group_by(zone) |>
